@@ -131,7 +131,7 @@ mmm config create my_preset --paranoid maximum --quality high
 Complete sanitization of individual files
 
 ```bash
-mmm obl INPUT_FILE [OPTIONS]
+mmm obliterate INPUT_FILE [OPTIONS]
 
 Options:
   -o, --output PATH     Output file path
