@@ -2,6 +2,7 @@
 Optimized processor with CPU multi-threading and GPU acceleration
 """
 
+import os
 import numpy as np
 import librosa
 import cupy as cp  # GPU acceleration

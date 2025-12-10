@@ -6,15 +6,19 @@ disable=
     C0114, C0115, C0116,  # missing module/class/function docstring
     C0304,                # missing final newline
     C0301,                # long lines
+    C0103, C0104,         # naming / disallowed names in samples
+    R0903,                # too few public methods
     C0411, C0413, C0415,  # import order/position
     W1309,                # f-string without interpolation
     R0801,                # duplicate-code
     R0912, R0913, R0914, R0915, R0917,  # too many branches/args/locals/statements/positional args
     R0902, R0916,         # too many instance attrs / boolean expressions
     R1731, R1705,         # prefer max builtin / unnecessary else-after-return
+    R1702, R1716,         # nested blocks / chained comparison noise
     W0718, W0702, W0719,  # broad/bare except
     W0613,                # unused-argument (common in click handlers/tests)
     W0611, W0612,         # unused imports/variables in demos/tests
+    W0621, W0404,         # redefined/reimported names in demos
     W0511,                # TODOs
     W0212,                # protected-access in tests
     W1514,                # open without encoding (demo/scripts)
@@ -23,7 +27,8 @@ disable=
     E0401,                # import-error (for optional deps)
     E0102,                # function-redefined (common with click command aliases)
     E1101,                # no-member (for dynamic attrs in console)
-    E1120, E1123          # no-value-for-parameter / unexpected keyword (click decorators)
+    E1120, E1123,         # no-value-for-parameter / unexpected keyword (click decorators)
+    R1732                 # consider-using-with (scripts)
 
 [MESSAGES CONTROL]
 
