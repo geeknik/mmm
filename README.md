@@ -82,7 +82,7 @@ Without GPU acceleration (CPU-only):
 
 ```bash
 # Obliterate metadata from a single file
-mmm obl dystopian_symphony.mp3
+mmm obliterate dystopian_symphony.mp3
 
 # Paranoid mode with verification
 mmm obliterate suspicious_music.wav --paranoid --verify -o clean_output.wav
