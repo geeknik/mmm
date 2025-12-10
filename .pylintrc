@@ -28,7 +28,9 @@ disable=
     E0102,                # function-redefined (common with click command aliases)
     E1101,                # no-member (for dynamic attrs in console)
     E1120, E1123,         # no-value-for-parameter / unexpected keyword (click decorators)
-    R1732                 # consider-using-with (scripts)
+    R1732,                # consider-using-with (scripts)
+    W0201,                # attribute-defined-outside-init (tests)
+    W1510                 # subprocess.run without check (scripts)
 
 [MESSAGES CONTROL]
 
