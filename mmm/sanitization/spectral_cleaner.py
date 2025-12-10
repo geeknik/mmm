@@ -114,6 +114,9 @@ class SpectralCleaner:
         fft_data = fft(audio_data)
         freqs = fftfreq(len(audio_data), 1/sample_rate)
 
+        # Work on a copy to satisfy static analyzers
+        fft_mod = fft_data.copy()
+
         # Scan for suspicious high frequency content
         for freq_range in self.watermark_freq_bands:
             freq_min, freq_max = freq_range
@@ -123,11 +126,11 @@ class SpectralCleaner:
 
             # Find frequencies in range
             freq_mask = (np.abs(freqs) >= freq_min) & (np.abs(freqs) < freq_max)
-            freq_power = np.abs(fft_data[freq_mask])
+            freq_power = np.abs(fft_mod[freq_mask])
 
             if len(freq_power) > 0:
                 avg_power = np.mean(freq_power)
-                noise_floor = np.median(np.abs(fft_data))
+                noise_floor = np.median(np.abs(fft_mod))
 
                 # Detect watermark if power is significantly above noise floor
                 if avg_power > noise_floor * 5:
@@ -135,13 +138,13 @@ class SpectralCleaner:
 
                     # Remove or attenuate suspicious frequencies
                     attenuation_factor = 0.1  # Reduce by 90%
-                    fft_data[freq_mask] *= attenuation_factor
+                    fft_mod[freq_mask] = fft_mod[freq_mask] * attenuation_factor
 
                     result['removed'] += 1
                     result['frequencies_cleaned'].append(freq_range)
 
         # Convert back to time domain
-        result['cleaned_data'] = np.real(ifft(fft_data))
+        result['cleaned_data'] = np.real(ifft(fft_mod))
 
         return result
 
