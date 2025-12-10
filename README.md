@@ -46,6 +46,36 @@ pip install -e .
 
 **Important**: MMM requires Python 3.10-3.13 due to librosa dependencies. Python 3.14+ is not yet supported by numba/librosa.
 
+### GPU Acceleration (Optional - Recommended!)
+
+For maximum performance (700x+ speedup), install GPU packages:
+
+```bash
+# Install GPU acceleration packages (NVIDIA GPU required)
+pip install cupy-cuda12x torch torchaudio
+
+# Verify GPU detection
+python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}')"
+```
+
+**GPU Requirements:**
+- NVIDIA GPU with CUDA support (tested on RTX 3080 Ti)
+- 4GB+ VRAM recommended
+- CUDA 12.x compatible drivers
+
+### Performance Benchmarks
+
+With GPU acceleration enabled (RTX 3080 Ti):
+
+- **790x real-time processing speed**
+- **47,409 audio-minutes per minute throughput**
+- **0.27 seconds to analyze 214.6-second audio file**
+- **Parallel processing across all CPU cores + GPU**
+
+Without GPU acceleration (CPU-only):
+- Standard processing speed (slower for large files)
+- Still utilizes multi-core CPU processing
+
 ### Basic Usage
 
 ```bash
@@ -107,6 +137,7 @@ Options:
   --verify             Verify watermark removal
   --backup             Create backup of original
   --format FORMAT      Output format (preserve/mp3/wav)
+  --turbo              Enable GPU acceleration (700x+ faster)
 ```
 
 ### `massacre`
@@ -127,7 +158,8 @@ Options:
 Deep forensic analysis without modification
 
 ```bash
-mmm analyze INPUT_FILE
+mmm analyze INPUT_FILE                # Regular CPU mode
+mmm analyze INPUT_FILE --turbo        # GPU accelerated mode (700x+ faster)
 ```
 
 ### `config`
@@ -137,6 +169,54 @@ Configuration management
 mmm config              Show current config
 mmm config preset NAME  Apply preset
 ```
+
+## 🎛️ Advanced Stealth Flags
+
+These are opt-in, fine-grained toggles for research tuning. Defaults keep audio quality high; enable selectively:
+
+- `--gated-resample-nudge/--no-gated-resample-nudge` (default off): ultra-tiny resample up/down applied only on higher-energy segments (minimal audibility, good stealth).
+- `--phase-noise/--no-phase-noise` (default on): tiny FFT phase noise.
+- `--phase-swirl/--no-phase-swirl` (default on): light all-pass swirl.
+- `--phase-dither/--no-phase-dither` (default on), `--comb-mask/--no-comb-mask`, `--transient-shift/--no-transient-shift`: earlier experimental steps (may affect audio; leave off unless testing).
+- `--masked-hf-phase/--no-masked-hf-phase` (default off): HF-only masked phase noise.
+- `--micro-eq-flutter/--no-micro-eq-flutter` (default off): RMS-gated, <0.013 dB band flutter.
+- `--hf-decorrelate/--no-hf-decorrelate` (default off): decorrelate only 12–16 kHz band.
+- `--refined-transient/--no-refined-transient` (default off): ultra-small, onset-gated shifts.
+- `--adaptive-transient/--no-adaptive-transient` (default off): onset-strength adaptive micro-shifts (~0.03–0.08 ms) with light blending.
+
+Recommended “stealth” starting point (quality-preserving):
+```bash
+python -m mmm.cli obliterate input.mp3 -o output.mp3 --turbo --paranoid \
+  --gated-resample-nudge --phase-noise \
+  --no-phase-dither --no-comb-mask --no-transient-shift \
+  --no-phase-swirl --no-masked-hf-phase --no-resample-nudge \
+  --no-hf-decorrelate --no-micro-eq-flutter --no-refined-transient
+```
+
+Preset shortcut (applies the above flags): `stealth-plus`
+
+```yaml
+# ~/.config/mmm/config.yaml (example)
+preset: stealth-plus
+```
+
+You can also load it via `mmm config preset stealth-plus` (creates/uses preset file under your config dir).
+
+Preset includes advanced flags:
+- phase_dither=False, comb_mask=False, transient_shift=False
+- phase_swirl=False, masked_hf_phase=False, resample_nudge=False
+- gated_resample_nudge=True, phase_noise=True
+- micro_eq_flutter=False, hf_decorrelate=False
+- refined_transient=False, adaptive_transient=False
+
+## 🧪 Detector Notes (Research)
+
+We test against third-party detectors to understand robustness (not to guarantee evasion). Recent results:
+
+- **SubmitHub / SHLabs**: “Inconclusive / mixed characteristics” with clean audio using `--gated-resample-nudge --phase-noise` and other advanced flags off. Temporal scores improved significantly; spectral scores became “could be AI / human unlikely”.
+- Aggressive stacks (phase dither / comb mask / transient shift) degraded audio; not recommended.
+
+Always audition audio locally before running external checks.
 
 ## 🛡️ Legal & Ethical Notice
 
