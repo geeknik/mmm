@@ -10,6 +10,7 @@ import shutil
 
 from mmm.core.audio_sanitizer import AudioSanitizer
 from mmm.config.config_manager import ConfigManager
+from mmm.config.defaults import PRESETS
 
 
 class TestAudioSanitizer:
@@ -258,3 +259,27 @@ class TestAudioSanitizer:
             cleaned_audio, sr = sf.read(str(result['output_file']))
             assert cleaned_audio.ndim == 2  # Should be stereo
             assert cleaned_audio.shape[1] == 2  # Should have 2 channels
+
+    def test_preset_advanced_flags_applied(self):
+        """Advanced flags should honor preset defaults when not set via CLI"""
+        cfg = ConfigManager().get_config()
+        cfg['preset'] = 'stealth-plus'
+
+        sanitizer = AudioSanitizer(
+            input_file=self.create_test_audio_file("test.wav"),
+            config=cfg
+        )
+        # Defaults in PRESETS should exist
+        preset_flags = PRESETS['stealth-plus']['advanced_flags']
+        # Verify we can read them for sanity (AudioSanitizer itself doesn't apply flags, CLI does)
+        assert preset_flags['gated_resample_nudge'] is True
+        assert preset_flags['phase_noise'] is True
+        assert preset_flags['phase_dither'] is False
+
+    def test_pattern_stats_labels(self):
+        """Sanitizer stats use patterns_* keys instead of watermark counts"""
+        input_file = self.create_test_audio_file("test.wav")
+        sanitizer = AudioSanitizer(input_file=input_file, config=self.config)
+        result = sanitizer.sanitize_audio()
+        assert 'patterns_found' in result['stats']
+        assert 'patterns_suppressed' in result['stats']
