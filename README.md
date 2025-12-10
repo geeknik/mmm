@@ -99,7 +99,7 @@ mmm analyze questionable_track.mp3
 MMM uses YAML configuration files for customization:
 
 ```yaml
-# ~/.mmm/config.yaml
+# ~/.config/mmm/config.yaml
 paranoia_level: medium
 preserve_quality: high
 watermark_detection:
