@@ -1,10 +1,12 @@
 # 🎵 Melodic Metadata Massacrer (MMM)
 
-[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://python.org)
+[![Python](https://img.shields.io/badge/Python-3.10-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Experimental-orange.svg)]()
 
 > *"In the symphony of digital rights, we are the conductors of chaos."* 🎼⚡
+
+<img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/6b342199-dbdd-446b-8c6f-983e50ef5625" />
 
 **MMM** is a Python CLI tool that performs lossless removal of ALL watermarks and metadata from MP3 and WAV audio files, effectively thwarting systems that detect AI-generated music through embedded identifiers.
 
