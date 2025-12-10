@@ -10,11 +10,20 @@ disable=
     W1309,                # f-string without interpolation
     R0801,                # duplicate-code
     R0912, R0913, R0914, R0915, R0917,  # too many branches/args/locals/statements/positional args
+    R0902, R0916,         # too many instance attrs / boolean expressions
+    R1731, R1705,         # prefer max builtin / unnecessary else-after-return
     W0718, W0702, W0719,  # broad/bare except
     W0613,                # unused-argument (common in click handlers/tests)
+    W0611, W0612,         # unused imports/variables in demos/tests
+    W0511,                # TODOs
+    W0212,                # protected-access in tests
+    W1514,                # open without encoding (demo/scripts)
+    W0707,                # raise-missing-from
+    C0325,                # superfluous parens
     E0401,                # import-error (for optional deps)
     E0102,                # function-redefined (common with click command aliases)
-    E1120                 # no-value-for-parameter (click decorators)
+    E1101,                # no-member (for dynamic attrs in console)
+    E1120, E1123          # no-value-for-parameter / unexpected keyword (click decorators)
 
 [MESSAGES CONTROL]
 
