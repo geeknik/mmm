@@ -5,12 +5,16 @@ extension-pkg-whitelist=numpy
 disable=
     C0114, C0115, C0116,  # missing module/class/function docstring
     C0304,                # missing final newline
+    C0301,                # long lines
     C0411, C0413, C0415,  # import order/position
     W1309,                # f-string without interpolation
     R0801,                # duplicate-code
-    R0912, R0913, R0914, R0915,  # too many branches/args/locals/statements
+    R0912, R0913, R0914, R0915, R0917,  # too many branches/args/locals/statements/positional args
     W0718, W0702, W0719,  # broad/bare except
-    E0401                 # import-error (for optional deps)
+    W0613,                # unused-argument (common in click handlers/tests)
+    E0401,                # import-error (for optional deps)
+    E0102,                # function-redefined (common with click command aliases)
+    E1120                 # no-value-for-parameter (click decorators)
 
 [MESSAGES CONTROL]
 
