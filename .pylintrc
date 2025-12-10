@@ -1,0 +1,21 @@
+[MASTER]
+ignore=debug_audio.py,debug_chain.py,debug_config.py,demo_both_modes.py,demo_mmm.py,fast_analysis.py,final_demo.py,final_working_demo.py,performance_demo.py,quick_test.py,status_check.py,test_gpu.py,turbo_sanitizer.py
+max-line-length=130
+extension-pkg-whitelist=numpy
+disable=
+    C0114, C0115, C0116,  # missing module/class/function docstring
+    C0304,                # missing final newline
+    C0411, C0413, C0415,  # import order/position
+    W1309,                # f-string without interpolation
+    R0801,                # duplicate-code
+    R0912, R0913, R0914, R0915,  # too many branches/args/locals/statements
+    W0718, W0702, W0719,  # broad/bare except
+    E0401                 # import-error (for optional deps)
+
+[MESSAGES CONTROL]
+
+[REPORTS]
+reports=no
+
+[FORMAT]
+max-line-length=130
