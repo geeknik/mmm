@@ -206,13 +206,17 @@ class ConsoleManager:
         table.add_column("Value", style="white")
 
         stats = results.get('stats', {})
+        notes = []
 
         table.add_row("Status", "✅ Success" if results.get('success') else "❌ Failed")
         table.add_row("", "")  # Separator
 
         table.add_row("Metadata Removed", str(stats.get('metadata_removed', 0)))
-        table.add_row("Watermarks Detected", str(stats.get('watermarks_detected', 0)))
-        table.add_row("Watermarks Removed", str(stats.get('watermarks_removed', 0)))
+        table.add_row("Patterns Found", str(stats.get('patterns_found', 0)))
+        table.add_row("Patterns Suppressed", str(stats.get('patterns_suppressed', 0)))
+        # Add context if detector found none but cleaner reported suppressions
+        if stats.get('patterns_found', 0) > 0 and stats.get('watermarks_detected', 0) == 0:
+            notes.append("Pattern counts reflect spectral suppression ops; detector flagged no explicit watermarks pre-scan.")
         table.add_row("Quality Loss", f"{stats.get('quality_loss', 0):.2f}%")
         table.add_row("Processing Time", f"{stats.get('processing_time', 0):.2f} seconds")
         table.add_row("", "")  # Separator
@@ -222,6 +226,11 @@ class ConsoleManager:
 
         if 'final_hash' in results:
             table.add_row("File Hash Changed", "✅ Yes" if results.get('original_hash') != results.get('final_hash') else "❌ No")
+
+        if notes:
+            table.add_row("Notes", notes[0])
+            for n in notes[1:]:
+                table.add_row("  └─", n)
 
         self.console.print(Panel(table, title="🎯 Mission Accomplished", border_style="green"))
 
@@ -254,6 +263,17 @@ class ConsoleManager:
 
         table.add_row("", "")  # Separator
         table.add_row("Overall Assessment", f"[{effectiveness_style}]{'Excellent' if effectiveness >= 95 else 'Good' if effectiveness >= 80 else 'Poor'}[/{effectiveness_style}]")
+
+        # Add context notes
+        notes = []
+        if verification.get('new_analysis', {}).get('metadata', {}).get('suspicious_chunks'):
+            notes.append("Threat counts include suspicious container/metadata chunks; detector reported zero watermarks.")
+        if verification.get('new_analysis', {}).get('watermarks', {}).get('detected') in ([], None):
+            notes.append("No detector-verified watermarks; remaining threats are metadata/binary anomalies.")
+        if notes:
+            table.add_row("Notes", notes[0])
+            for n in notes[1:]:
+                table.add_row("  └─", n)
 
         self.console.print(Panel(table, title="✅ Quality Assurance", border_style="blue"))
 

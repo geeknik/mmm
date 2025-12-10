@@ -209,6 +209,10 @@ Preset includes advanced flags:
 - micro_eq_flutter=False, hf_decorrelate=False
 - refined_transient=False, adaptive_transient=False
 
+Notes on pattern suppression counts:
+- “Patterns Found/Suppressed” in sanitization results come from the spectral cleaner’s suppression actions (e.g., attenuating suspicious bands/patterns) and do not imply detector-verified watermarks unless the detector reports them.
+- Verification threat counts include metadata/container anomalies and detector findings; if the detector reports zero watermarks, remaining threats are likely metadata/binary anomalies rather than confirmed watermarks.
+
 ## 🧪 Detector Notes (Research)
 
 We test against third-party detectors to understand robustness (not to guarantee evasion). Recent results:

@@ -230,8 +230,8 @@ class AudioSanitizer:
             self._info("Phase 2: Spectral watermark elimination...")
             spectral_result = self.spectral_cleaner.clean_watermarks(sanitized_audio, self.sample_rate)
             sanitized_audio = spectral_result['cleaned_audio']
-            self.processing_stats['watermarks_detected'] = spectral_result['watermarks_found']
-            self.processing_stats['watermarks_removed'] = spectral_result['watermarks_removed']
+            self.processing_stats['patterns_found'] = spectral_result['watermarks_found']
+            self.processing_stats['patterns_suppressed'] = spectral_result['watermarks_removed']
 
             # Phase 3: Statistical fingerprint removal
             self._info("Phase 3: Statistical fingerprint destruction...")
