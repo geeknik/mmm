@@ -104,7 +104,7 @@ def preserving_sanitize(
         )
     except Exception as e:
         print(f"   ❌ Failed to load audio: {e}")
-        return {"success": False, "error": str(e)}
+        return {"success": False, "error": "Failed to load audio."}
 
     # Phase 2: PRESERVING threat neutralization
     print("🎵 Phase 2: PRESERVING threat neutralization...")
@@ -273,7 +273,7 @@ def preserving_sanitize(
         print(f"   ✅ Saved in {save_time:.2f}s")
     except Exception as e:
         print(f"   ❌ Failed to save: {e}")
-        return {"success": False, "error": str(e)}
+        return {"success": False, "error": "Failed to save sanitized audio."}
 
     total_time = time.time() - start_time
 
